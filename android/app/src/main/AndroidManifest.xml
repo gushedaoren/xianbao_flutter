@@ -3,7 +3,7 @@
     package="com.example.beir_flutter">
    <application
        android:usesCleartextTraffic="true"
-        android:label="Slumber Tales"
+        android:label="线报好羊毛"
         android:icon="@mipmap/ic_launcher"
        tools:ignore="MissingClass">
         <activity

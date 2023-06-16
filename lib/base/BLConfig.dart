@@ -2,17 +2,17 @@ import 'package:dio/dio.dart';
 
 class BLConfig {
 
-  static String Channel = "google play";
+  static String Channel = "网站";
 
-  static String PackageName = "com.shumei.tales";
-  static String AppName = "Slumber Tales";
+  static String PackageName = "com.shumei.xianbao";
+  static String AppName = "线报好羊毛";
 
 
   static String API_USER = "/userv14";
 
   static int QQGroup = 790242370;
 
-  static String API_HEALTH = "/beir"; //生产环境
+  static String API_HEALTH = "/xianbao"; //生产环境
 
   // static String API_HEALTH = "/beirtest"; //测试环境
 
