@@ -14,14 +14,14 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
   late TabController _tabController;
 
   var posts=[];
-  var tags;
+  var tags=[];
   var lastid="";
   var tagid="0";
   @override
   void initState() {
     super.initState();
     CommonTool().initApp();
-
+    _tabController = TabController(length: 4, vsync: this);
     getProductList();
   }
 
@@ -36,20 +36,18 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
     print("homepageurl:$url_get");
     var response = await RequestUtil.dio.get(url_get, queryParameters: queryParams);
 
-
+    _tabController.dispose();
     setState(() {
       posts = response.data["posts"];
       tags = response.data["tags"];
       lastid = response.data["lastid"];
-      _tabController = TabController(length: tags.length, vsync: this);
       print("tags:$tags");
     });
 
     setState(() {});
   }
   List<Widget> _buildTabContent() {
-    return tags.map((tag) {
-      // filter posts based on tag id
+    return (tags ?? []).map((tag) {
 
       return Center(
         child: ListView.builder(
@@ -66,9 +64,8 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
   }
 
   @override
-  @override
   Widget build(BuildContext context) {
-    if (tags == null||_tabController==null) {
+    if (tags == []) {
       return Center(
         child: CircularProgressIndicator(),
       );
