@@ -1,5 +1,9 @@
 import 'package:beir_flutter/base/BLConfig.dart';
+import 'package:beir_flutter/tool/CommonTool.dart';
+import 'package:beir_flutter/tool/RequestUtil.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyTabBarPage extends StatefulWidget {
   @override
@@ -9,35 +13,87 @@ class MyTabBarPage extends StatefulWidget {
 class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
+  var posts=[];
+  var tags;
+  var lastid="";
+  var tagid="0";
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    CommonTool().initApp();
+
+    getProductList();
+  }
+
+  getProductList() async {
+
+    var url_get = BLConfig.domain + "/posts?tagid=$tagid";
+
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var userid = sharedPreferences.getString("userid");
+
+    var queryParams = {'userid': userid};
+    print("homepageurl:$url_get");
+    var response = await RequestUtil.dio.get(url_get, queryParameters: queryParams);
+
+
+    setState(() {
+      posts = response.data["posts"];
+      tags = response.data["tags"];
+      lastid = response.data["lastid"];
+      _tabController = TabController(length: tags.length, vsync: this);
+      print("tags:$tags");
+    });
+
+    setState(() {});
+  }
+  List<Widget> _buildTabContent() {
+    return tags.map((tag) {
+      // filter posts based on tag id
+
+      return Center(
+        child: ListView.builder(
+          itemCount: posts.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              title: Text(posts[index]['title']),
+              subtitle: Text(posts[index]['date']),
+            );
+          },
+        ),
+      );
+    }).toList();
   }
 
   @override
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(BLConfig.AppName),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: [
-            Tab(text: 'Tab 1'),
-            Tab(text: 'Tab 2'),
-            Tab(text: 'Tab 3'),
-          ],
+    if (tags == null||_tabController==null) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text(BLConfig.AppName),
+          bottom: TabBar(
+            controller: _tabController,
+            tabs: tags.map((tag) {
+              return Tab(text: tag['name']);
+            }).toList(),
+            onTap: (index) {
+              setState(() {
+                tagid = tags[index]['id'];
+              });
+            },
+          ),
         ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: <Widget>[
-          Center(child: Text('Content for Tab 1')),
-          Center(child: Text('Content for Tab 2')),
-          Center(child: Text('Content for Tab 3')),
-        ],
-      ),
-    );
+        body: TabBarView(
+          controller: _tabController,
+          children: _buildTabContent(),
+        ),
+      );
+    }
   }
 
   @override

@@ -102,7 +102,7 @@ class CommonTool {
     }
     RequestUtil.initDio();
     RequestUtil.doAction("initApp");
-    RequestUtil().pickBaseDomain();
+    // RequestUtil().pickBaseDomain();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var initAppCount = prefs.getInt("initApp");
     if (initAppCount == null) initAppCount = 0;
