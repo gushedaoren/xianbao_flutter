@@ -1,0 +1,62 @@
+{
+    "app_name":"DoDoList",
+    "breakfast":"早餐",
+    "lunch":"午餐",
+    "dinner":"晚餐",
+    "ExtraMeal":"加餐",
+    "yichi":"已吃",
+    "haisheng":"还剩",
+
+
+    "jilu":"记录",
+    "change_language":"切换语言",
+    "logout":"退出登录",
+    "version_code":"版本号",
+    "feedback":"意见反馈",
+    "about_us":"关于我们",
+    "PrivacyAgreement":"隐私协议",
+    "DeleteUser":"删除用户",
+   
+    "ResetPassword":"重置密码",
+    "OK":"确认",
+    "Cancel":"取消",
+    "Alert":"提示",
+    "AlertLogout":"确认是否退出登录?",
+    "recipe":"食谱",
+    "bingli":"病历",
+    "me":"我",
+    "alert_delete_people":"确认是否删除【{}】成员?",
+    "diet_recipe":"减肥食谱",
+    "username":"用户名",
+    "password":"密码",
+    "login":"登录",
+    "register":"注册",
+    "RepetPassword":"再次输入密码",
+    "ForgetPassword":"忘记密码",
+    "loading":"请稍后...",
+    "err_network":"网络异常",
+    "password_not_equal":"两次密码不一致",
+    "input_passowrd":"请输入密码",
+    "repet_passowrd":"请再次输入密码",
+    "submit":"提交",
+    "email":"邮箱",
+    "phone":"手机号",
+    "please_input_feedback_content":"请输入反馈内容",
+    "alert_delete_user":"用户删除后将无法恢复数据，请谨慎操作！！！",
+
+    "reliangtongji":"热量统计",
+    "reliangtongjibiao":"热量统计表(单位：千卡)",
+    "add":"添加",
+
+    "Remaining": "剩余",
+    "Target": "目标",
+
+    "username_eppty": "用户名不能为空",
+    "password_eppty": "密码不能为空",
+    "password_hint": "请输入正确的4-20位数字、字母或下划线的密码",
+    "username_hint": "请记住用户名",
+
+    "add_food_tips":"   本程序内卡路里指标参考《中国食物成分表》中国疾病预防控制中心营养与食品安全所 编著 杨月欣主编的内容，但仍有可能导致机器或人工录入的过程中存在错误，用户可以通过我的页面进入意见反馈及时反馈给我们，我们会及时修正。\n    程序中所展示的数据指标仅供用户参考使用，不可作为医学治疗使用。"
+    
+    
+}

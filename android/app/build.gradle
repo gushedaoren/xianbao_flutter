@@ -1,0 +1,142 @@
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+
+android {
+    compileSdkVersion 33
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    signingConfigs {
+        release {
+            storeFile file('brstory.jks')
+            storePassword "zaq123456"
+            keyAlias "brstory"
+            keyPassword "zaq123456"
+        }
+        debug {
+            storeFile file('brstory.jks')
+            storePassword "zaq123456"
+            keyAlias "brstory"
+            keyPassword "zaq123456"
+        }
+    }
+
+
+    defaultConfig {
+        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        applicationId "com.shumei.tales"
+        minSdkVersion 21
+        targetSdkVersion flutter.targetSdkVersion
+
+        versionCode 104
+        versionName "1.0.4"
+
+        multiDexEnabled true
+        dexOptions {
+            javaMaxHeapSize "8g"
+        }
+        ndk {
+            //选择要添加的对应 cpu 类型的 .so 库。
+            abiFilters "arm64-v8a", "armeabi", "armeabi-v7a"
+        }
+        manifestPlaceholders = [
+                JPUSH_PKGNAME : applicationId,
+                JPUSH_APPKEY : "541f22be878a7f6f9668a122", // NOTE: JPush 上注册的包名对应的 Appkey.
+                JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+//                MEIZU_APPKEY : "1",
+//                MEIZU_APPID : "1",
+//                XIAOMI_APPID : "1",
+//                XIAOMI_APPKEY : "1",
+//                OPPO_APPKEY : "1",
+//                OPPO_APPID : "1",
+//                OPPO_APPSECRET : "1",
+//                VIVO_APPKEY : "1",
+//                VIVO_APPID : "1",
+//                HONOR_APPID : "1",
+        ]
+       
+    }
+
+    buildTypes {
+        release{
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            // Unused resources will be removed.
+            shrinkResources true
+
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+        }
+        debug{
+            signingConfig signingConfigs.debug
+
+        }
+      
+
+    }
+}
+
+flutter {
+    source '../..'
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+   
+    implementation fileTree(include:['*.jar'], dir:'libs')
+
+
+
+    
+
+
+//    // 接入荣耀厂商
+//    implementation 'cn.jiguang.sdk.plugin:honor:4.7.2'
+//
+//    // 接入魅族厂商
+//    implementation 'cn.jiguang.sdk.plugin:meizu:4.7.2'
+//    // 接入 VIVO 厂商
+//    implementation 'cn.jiguang.sdk.plugin:vivo:4.7.2'
+//    // 接入 OPPO 厂商
+//    implementation 'cn.jiguang.sdk.plugin:oppo:4.7.2'
+//    // 接入小米厂商
+//    implementation 'cn.jiguang.sdk.plugin:xiaomi:4.7.2'
+
+
+}
