@@ -14,6 +14,7 @@ class MyTabBarPage extends StatefulWidget {
 
 class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  ScrollController _scrollController = ScrollController();
   bool isLoading = true;
   var posts=[];
   var tags=[];
@@ -25,10 +26,22 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
   void initState() {
     super.initState();
     CommonTool().initApp();
+    _scrollController.addListener(_onScroll);
     _tabController = TabController(length: 5, vsync: this);
     getProductList();
   }
-
+  void _onScroll() {
+    if (isLoading) return;
+    print("_onScroll:");
+    print(_scrollController.position.pixels);
+    print(_scrollController.position.maxScrollExtent);
+    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+      setState(() {
+        isLoading = true;
+      });
+      getProductList();
+    }
+  }
   getProductList() async {
 
     var url_get = BLConfig.domain + "/posts?tagid=$tagid&lastid=$lastid&keyword=$keyword";
@@ -42,7 +55,12 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
     var response = await RequestUtil.dio.get(url_get, queryParameters: queryParams);
 
     setState(() {
-      posts = response.data["posts"];
+      if(lastid==""){
+        posts = response.data["posts"];
+      }else{
+        posts.addAll(response.data["posts"]);
+      }
+
       tags = response.data["tags"];
       hint = response.data["hint"];
       lastid = response.data["lastid"];
@@ -97,6 +115,8 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
             onTap: (index) {
               setState(() {
                 tagid = tags[index]['id'];
+                lastid = "";
+                getProductList();
               });
             },
           ),
@@ -122,6 +142,7 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
   @override
   void dispose() {
     _tabController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 }
