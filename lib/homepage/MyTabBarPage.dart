@@ -1,4 +1,5 @@
 import 'package:beir_flutter/base/BLConfig.dart';
+import 'package:beir_flutter/pages/VpnPage.dart';
 import 'package:beir_flutter/tool/CommonTool.dart';
 import 'package:beir_flutter/tool/RequestUtil.dart';
 import 'package:dio/dio.dart';
@@ -107,6 +108,17 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
       return Scaffold(
         appBar: AppBar(
           title: Text(BLConfig.AppName),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.my_location_rounded),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => VpnPage()), // 替换为你的 VPN 地址切换页面的构造函数
+                );
+              },
+            ),
+          ],
           bottom: TabBar(
             controller: _tabController,
             tabs: tags.map((tag) {
