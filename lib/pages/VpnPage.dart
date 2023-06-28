@@ -1,3 +1,4 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:beir_flutter/base/BLConfig.dart';
 import 'package:beir_flutter/tool/RequestUtil.dart';
 import 'package:dio/dio.dart';
@@ -68,22 +69,19 @@ class _VpnPageState extends State<VpnPage> {
     // setWifiProxy(proxy["ipaddress"],proxy["port"]);
     var ipaddress = proxy["ipaddress"];
     Clipboard.setData(ClipboardData(text: ipaddress));
-    var msg='ip地址已复制，请砌筑端口号为:'+proxy["port"];
+    var msg='ip地址已复制，请记住端口号为:'+proxy["port"];
     Fluttertoast.showToast(
       msg: msg,
       toastLength: Toast.LENGTH_LONG, // Toast持续时间，可以是Toast.LENGTH_SHORT或Toast.LENGTH_LONG
       gravity: ToastGravity.BOTTOM, // Toast显示的位置
-      backgroundColor: Colors.black54, // Toast背景颜色
+      backgroundColor: Colors.black, // Toast背景颜色
       textColor: Colors.white, // Toast文字颜色
       fontSize: 16.0, // Toast文字大小
     );
 
-    final url = 'App-Prefs:root=WIFI';
-    if (await  canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url));
-    } else {
-      throw 'Could not launch Wi-Fi settings.';
-    }
+    AppSettings.openWIFISettings(callback: () {
+      print("sample callback function called");
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -97,6 +95,7 @@ class _VpnPageState extends State<VpnPage> {
           final proxy = proxyList[index];
           return ListTile(
             title: Text(proxy["region"]),
+            subtitle: Text(proxy["proxy"]),
             onTap: () {
               switchProxy(proxy);
             },
