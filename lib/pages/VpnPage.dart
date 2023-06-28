@@ -94,8 +94,8 @@ class _VpnPageState extends State<VpnPage> {
         itemBuilder: (context, index) {
           final proxy = proxyList[index];
           return ListTile(
-            title: Text(proxy["region"]),
-            subtitle: Text(proxy["proxy"]),
+            title: Text(proxy["proxy"]),
+            subtitle: Text(proxy["region"]),
             onTap: () {
               switchProxy(proxy);
             },
