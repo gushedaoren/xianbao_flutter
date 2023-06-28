@@ -5,6 +5,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../pages/DetailPage.dart';
+
 class MyTabBarPage extends StatefulWidget {
   @override
   _MyTabBarState createState() => _MyTabBarState();
@@ -12,22 +14,25 @@ class MyTabBarPage extends StatefulWidget {
 
 class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateMixin {
   late TabController _tabController;
-
+  bool isLoading = true;
   var posts=[];
   var tags=[];
   var lastid="";
   var tagid="0";
+  var hint="";
+  var keyword="";
   @override
   void initState() {
     super.initState();
     CommonTool().initApp();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 5, vsync: this);
     getProductList();
   }
 
   getProductList() async {
 
-    var url_get = BLConfig.domain + "/posts?tagid=$tagid";
+    var url_get = BLConfig.domain + "/posts?tagid=$tagid&lastid=$lastid&keyword=$keyword";
+    print(url_get);
 
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var userid = sharedPreferences.getString("userid");
@@ -36,11 +41,12 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
     print("homepageurl:$url_get");
     var response = await RequestUtil.dio.get(url_get, queryParameters: queryParams);
 
-    _tabController.dispose();
     setState(() {
       posts = response.data["posts"];
       tags = response.data["tags"];
+      hint = response.data["hint"];
       lastid = response.data["lastid"];
+      isLoading = false;
       print("tags:$tags");
     });
 
@@ -50,22 +56,32 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
     return (tags ?? []).map((tag) {
 
       return Center(
-        child: ListView.builder(
-          itemCount: posts.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              title: Text(posts[index]['title']),
-              subtitle: Text(posts[index]['date']),
-            );
-          },
-        ),
+        child:
+              ListView.builder(
+              itemCount: posts.length,
+              itemBuilder: (BuildContext context, int index) {
+                return ListTile(
+                  title: Text(posts[index]['title']),
+                  subtitle: Text(posts[index]['date']),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailPage(post:posts[index],hint:hint),
+                      ),
+                    );
+                  },
+                );
+            },
+          ),
+
       );
     }).toList();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (tags == []) {
+    if (isLoading) {
       return Center(
         child: CircularProgressIndicator(),
       );
@@ -85,10 +101,20 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
             },
           ),
         ),
-        body: TabBarView(
-          controller: _tabController,
-          children: _buildTabContent(),
-        ),
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min, // 设置为 MainAxisSize.min
+            children: [
+
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: _buildTabContent(),
+                ),
+              ),
+            ],
+          ),
+        )
       );
     }
   }
