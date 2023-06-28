@@ -3,6 +3,10 @@ import 'package:beir_flutter/tool/RequestUtil.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
+import 'package:connectivity/connectivity.dart';
+import 'package:flutter/services.dart';
+
+import 'package:fluttertoast/fluttertoast.dart';
 
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,6 +18,18 @@ class VpnPage extends StatefulWidget {
 
 class _VpnPageState extends State<VpnPage> {
   var proxyList = [];
+  static const platform = const MethodChannel('wifi_proxy_channel');
+
+  void setWifiProxy(String proxyAddress, String proxyPort) async {
+    try {
+      await platform.invokeMethod('setWifiProxy', {
+        'proxyAddress': proxyAddress,
+        'proxyPort': proxyPort,
+      });
+    } catch (e) {
+      print('Failed to set WiFi proxy: $e');
+    }
+  }
 
   @override
   void initState() {
@@ -42,12 +58,14 @@ class _VpnPageState extends State<VpnPage> {
     }
   }
 
+
   Future<void> switchProxy(proxy) async {
     // 执行地址切换的逻辑，可以根据具体需求自行实现
     // 在这个示例中，只是打印被选中的代理地址
     print('Switching to proxy: $proxy');
-  }
 
+    setWifiProxy(proxy["ipaddress"],proxy["port"]);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
