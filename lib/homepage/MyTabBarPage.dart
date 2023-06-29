@@ -15,6 +15,7 @@ class MyTabBarPage extends StatefulWidget {
 
 class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  late PageController _pageController;
   ScrollController _scrollController = ScrollController();
   bool isLoading = true;
   var posts=[];
@@ -29,6 +30,7 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
     CommonTool().initApp();
     _scrollController.addListener(_onScroll);
     _tabController = TabController(length: 5, vsync: this);
+    _pageController = PageController(initialPage: 0); // Initialize the PageController
     getProductList();
   }
   void _onScroll() {
@@ -71,10 +73,8 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
 
     setState(() {});
   }
-  List<Widget> _buildTabContent() {
-    return (tags ?? []).map((tag) {
-
-      return Center(
+   _buildTabContent() {
+    return Center(
         child:
               ListView.builder(
               itemCount: posts.length,
@@ -95,7 +95,7 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
           ),
 
       );
-    }).toList();
+
   }
 
   @override
@@ -129,6 +129,11 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
                 tagid = tags[index]['id'];
                 lastid = "";
                 getProductList();
+                _pageController.animateToPage(
+                  index,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                );
               });
             },
           ),
@@ -139,9 +144,24 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
             children: [
 
               Expanded(
-                child: TabBarView(
-                  controller: _tabController,
-                  children: _buildTabContent(),
+                child: PageView.builder(
+                  controller: _pageController,
+                  itemCount: tags.length,
+                  itemBuilder: (context, index) {
+                    return _buildTabContent();
+                  },
+                  onPageChanged: (index) {
+                    setState(() {
+                      tagid = tags[index]['id'];
+                      lastid = "";
+                      getProductList();
+                      _tabController.animateTo(
+                        index,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                      );
+                    });
+                  },
                 ),
               ),
             ],
@@ -155,6 +175,7 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
   void dispose() {
     _tabController.dispose();
     _scrollController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 }
