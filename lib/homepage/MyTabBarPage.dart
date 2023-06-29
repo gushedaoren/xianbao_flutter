@@ -33,11 +33,17 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
     _pageController = PageController(initialPage: 0); // Initialize the PageController
     getProductList();
   }
+  Widget _buildLoader() {
+    return isLoading
+        ? Center(child: CircularProgressIndicator())
+        : Container();
+  }
   void _onScroll() {
-    if (isLoading) return;
     print("_onScroll:");
+    if (isLoading) return;
     print(_scrollController.position.pixels);
     print(_scrollController.position.maxScrollExtent);
+
     if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
       setState(() {
         isLoading = true;
@@ -73,34 +79,50 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
 
     setState(() {});
   }
-   _buildTabContent() {
-    return Center(
-        child:
-              ListView.builder(
-              itemCount: posts.length,
-              itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  title: Text(posts[index]['title']),
-                  subtitle: Text(posts[index]['date']),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailPage(post:posts[index],hint:hint),
-                      ),
-                    );
-                  },
-                );
-            },
-          ),
+  Future<void> refreshData() async {
+    if (isLoading) return;
 
-      );
-
+    setState(() {
+      isLoading = true;
+    });
+    lastid="";
+    getProductList();
   }
 
+  Widget _buildTabContent() {
+    return RefreshIndicator(
+        onRefresh: refreshData,
+        child:ListView.builder(
+          controller: _scrollController,
+          itemCount: posts.length + 1,
+          itemBuilder: (BuildContext context, int index) {
+            if (index < posts.length) {
+              return ListTile(
+                title: Text(posts[index]['title']),
+                subtitle: Text(posts[index]['date']),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          DetailPage(post: posts[index], hint: hint),
+                    ),
+                  );
+                },
+              );
+            } else {
+              return _buildLoader();
+            }
+          })
+
+
+
+
+    );
+  }
   @override
   Widget build(BuildContext context) {
-    if (isLoading) {
+    if (isLoading&&(posts.isEmpty)) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
