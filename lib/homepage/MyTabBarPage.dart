@@ -102,7 +102,17 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     if (isLoading) {
       return Center(
-        child: CircularProgressIndicator(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("一大波羊毛正在飞速赶来...",style: TextStyle(
+              fontSize: 22, // 设置字体大小
+            ),),
+            Text("  "),
+            CircularProgressIndicator(),
+          ],
+        )
+
       );
     } else {
       return Scaffold(
