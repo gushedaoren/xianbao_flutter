@@ -31,7 +31,7 @@ class BLConfig {
   static String user_agreemnet_url =
       "https://1kcal.net/user_agreemnet.html"; //用户协议
 
-  static String baseDomain = "https://sh.1kcal.net"; //aws 美国服务器
+  static String baseDomain = "https://sh.1kcal.net";
 
   static String userDomain = baseDomain + API_USER;
   static String domain = baseDomain + API_HEALTH;

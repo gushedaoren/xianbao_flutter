@@ -52,6 +52,8 @@ dependencies:
   connectivity: ^3.0.6
   app_settings: 4.2.0
   share: ^2.0.4
+  package_info: ^2.0.2
+
 
 
 dev_dependencies:
