@@ -92,8 +92,8 @@ class DetailPageState extends State<DetailPage>  {
                   var title =  widget.post["title"];
                   var url = widget.post["guid"];
                   var date = "发布时间:"+widget.post["date"];
-                  Share.share('$title\n$url\n$date');
-
+                  var source="来源:线报好羊毛安卓版\n";
+                  Share.share('$title\n$url\n$date\n$source');
               },
             ),
           ],
