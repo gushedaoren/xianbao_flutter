@@ -59,6 +59,31 @@ class _VpnPageState extends State<VpnPage> {
       // 处理请求失败的情况
     }
   }
+  void navigateToSettings(BuildContext context) async {
+    // 显示持续时间较长的消息
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('提示'),
+          content: Text('即将跳转到WiFi设置界面'),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                AppSettings.openWIFISettings(callback: () {
+                  print("sample callback function called");
+                });
+
+                Navigator.pop(context);
+              },
+              child: Text('确认'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
 
   Future<void> switchProxy(proxy) async {
@@ -68,20 +93,34 @@ class _VpnPageState extends State<VpnPage> {
 
     // setWifiProxy(proxy["ipaddress"],proxy["port"]);
     var ipaddress = proxy["ipaddress"];
-    Clipboard.setData(ClipboardData(text: ipaddress));
+    Clipboard.setData(ClipboardData(text: proxy["proxy"]));
     var msg='ip地址已复制，请记住端口号为:'+proxy["port"];
-    Fluttertoast.showToast(
-      msg: msg,
-      toastLength: Toast.LENGTH_LONG, // Toast持续时间，可以是Toast.LENGTH_SHORT或Toast.LENGTH_LONG
-      gravity: ToastGravity.BOTTOM, // Toast显示的位置
-      backgroundColor: Colors.black, // Toast背景颜色
-      textColor: Colors.white, // Toast文字颜色
-      fontSize: 16.0, // Toast文字大小
-    );
+    navigateToSettings(context);
 
-    AppSettings.openWIFISettings(callback: () {
-      print("sample callback function called");
-    });
+
+  }
+  getListItem(proxy){
+    var mtype=proxy["type"];
+    Color remarkColor = mtype == "稳定" ? Colors.green : Colors.red; // 根据mtype值确定remark文本颜色
+    return ListTile(
+      title: Text(proxy["proxy"]),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start, // 设置子组件左对齐
+        children: [
+          Text(proxy["region"],style: TextStyle(
+            fontSize: 16, // 设置字体大小
+          ),),
+          Text(proxy['remark'],style: TextStyle(
+            fontSize: 12, // 设置字体大小
+            color: remarkColor, // 设置remark文本颜色
+          ),),
+        ],
+      ),
+
+      onTap: () {
+        switchProxy(proxy);
+      },
+    );
   }
   @override
   Widget build(BuildContext context) {
@@ -93,15 +132,10 @@ class _VpnPageState extends State<VpnPage> {
         itemCount: proxyList.length,
         itemBuilder: (context, index) {
           final proxy = proxyList[index];
-          return ListTile(
-            title: Text(proxy["proxy"]),
-            subtitle: Text(proxy["region"]),
-            onTap: () {
-              switchProxy(proxy);
-            },
-          );
+          return getListItem(proxy);
         },
       ),
     );
   }
 }
+

@@ -100,6 +100,7 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
               return ListTile(
                 title: Text(posts[index]['title']),
                 subtitle: Text(posts[index]['date']),
+
                 onTap: () {
                   Navigator.push(
                     context,
