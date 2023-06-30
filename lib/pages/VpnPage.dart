@@ -71,6 +71,13 @@ class _VpnPageState extends State<VpnPage> {
           actions: [
             ElevatedButton(
               onPressed: () {
+
+                Navigator.pop(context);
+              },
+              child: Text('取消'),
+            ),
+            ElevatedButton(
+              onPressed: () {
                 AppSettings.openWIFISettings(callback: () {
                   print("sample callback function called");
                 });
