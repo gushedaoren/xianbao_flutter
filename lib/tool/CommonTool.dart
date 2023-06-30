@@ -111,24 +111,7 @@ class CommonTool {
     prefs.commit();
     await initAd();
     if (Platform.isAndroid) {
-      // var hmsAnalytics = await HMSAnalytics.getInstance();
-      // hmsAnalytics.enableLog();
-      // hmsAnalytics.setAnalyticsEnabled(true);
-      // var hmsApiAvailability = HmsApiAvailability();
-      // final int resultCode =
-      //     await hmsApiAvailability.isHMSAvailableWithApkVersion(28);
-      // var _result = 'huaewi hms Availability result code: $resultCode';
-      // debugPrint(_result);
-      // if (resultCode != 0) {
-      //   hmsApiAvailability.setResultListener = (AvailabilityEvent? event) {
-      //     if (event != null) {
-      //       // var event='Availability event: '+event.toString();
-      //       print("AvailabilityEvent");
-      //       print(event);
-      //     }
-      //   };
-      //   hmsApiAvailability.getErrorDialog(resultCode, 1000, true);
-      // }
+
     }
 
     // SdkTool().initJPush();
@@ -361,14 +344,14 @@ class CommonTool {
                 //     context,
                 //     MaterialPageRoute(
                 //       builder: (context) =>
-                //           WebViewContainer(BLConfig.user_agreemnet_url, "用户协议"),
+                //           WebViewContainer(BLConfig.kt.user_agreemnet_url, "用户协议"),
                 //     ));
               } else if (key == '《隐私政策》') {
                 // Navigator.push(
                 //     context,
                 //     MaterialPageRoute(
                 //       builder: (context) => WebViewContainer(
-                //           BLConfig.privacy_url, "PrivacyAgreement".tr()),
+                //           BLConfig.kt.privacy_url, "PrivacyAgreement".tr()),
                 //     ));
               }
             },

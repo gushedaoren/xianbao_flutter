@@ -7,7 +7,7 @@ import 'dart:convert';
 class EncryptTool {
   ///  加密
   static encryption(content) {
-    // final key = Key.fromUtf8(BLConfig.AES_KEY);
+    // final key = Key.fromUtf8(BLConfig.kt.AES_KEY);
     // final iv = IV.fromLength(16);
     //
     // final encrypter = Encrypter(AES(key, mode: AESMode.cbc));

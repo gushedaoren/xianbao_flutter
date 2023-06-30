@@ -3,6 +3,7 @@ import 'package:beir_flutter/homepage/MyHomePage.dart';
 import 'package:beir_flutter/homepage/MyTabBarPage.dart';
 import 'package:beir_flutter/pages/SplashPage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_qq_ads/flutter_qq_ads.dart';
 import 'package:one_context/one_context.dart';
 
 void main() {
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FlutterQqAds.initAd(BLConfig.TencentAD_APPID); // 替换为你的 QQ 广告 App ID
     return MaterialApp(
       builder: OneContext().builder,
       navigatorKey: OneContext().key,
@@ -33,7 +35,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: SplashPage(),
+      home: MyTabBarPage(),
     );
   }
 }

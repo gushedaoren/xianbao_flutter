@@ -31,14 +31,23 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
   var tagid="0";
   var hint="";
   var keyword="";
+  Future<void> loadAndShowAd() async {
+    // await FlutterQqAds.initAd(BLConfig.kt.TencentAD_APPID); // 替换为你的 QQ 广告 App ID
+    await Future.delayed(Duration(seconds: 0)); // 延迟 5 秒钟展示广告
+    if (mounted) {
+      setState(() {
+        FlutterQqAds.showSplashAd(
+          BLConfig.TencentAD_Android_SPLASH_ID,
+          fetchDelay: 5,
+        );
+      });
+    }
+  }
   @override
   void initState() {
+    loadAndShowAd();
     super.initState();
-    FlutterQqAds.initAd(BLConfig.TencentAD_APPID);
-    FlutterQqAds.showSplashAd(
-      BLConfig.TencentAD_Android_SPLASH_ID,
-      fetchDelay: 5,
-    );
+
     CommonTool().initApp();
     _scrollController.addListener(_onScroll);
     _tabController = TabController(length: 5, vsync: this);

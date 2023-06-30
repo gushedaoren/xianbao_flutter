@@ -1,4 +1,4 @@
-package com.example.beir_flutter
+package com.shumei.xianbao
 
 
 import android.app.Activity.RESULT_OK

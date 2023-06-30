@@ -21,7 +21,7 @@ class SplashPage extends StatefulWidget {
   _SplashPageState createState() => _SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateMixin {
+class _SplashPageState extends State<SplashPage>  {
 
 
   void navigateToNextScreen() {
@@ -31,24 +31,34 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
       MaterialPageRoute(builder: (context) => MyTabBarPage()),
     );
   }
+
+  Future<void> loadAndShowAd() async {
+    await FlutterQqAds.initAd(BLConfig.TencentAD_APPID); // 替换为你的 QQ 广告 App ID
+    await Future.delayed(Duration(seconds: 5)); // 延迟 5 秒钟展示广告
+    if (mounted) {
+      setState(() {
+        FlutterQqAds.showSplashAd(
+          BLConfig.TencentAD_Android_SPLASH_ID,
+          fetchDelay: 5,
+        );
+      });
+    }
+  }
   @override
   void initState() {
     super.initState();
-    FlutterQqAds.initAd(BLConfig.TencentAD_APPID);
-    FlutterQqAds.showSplashAd(
-      BLConfig.TencentAD_Android_SPLASH_ID,
-      fetchDelay: 5,
-    );
-    FlutterQqAds.onEventListener((event) {
-      print(event.action);
-      if(event.action=="action"){
 
-      }
-      // navigateToNextScreen();
-
-    });
+    loadAndShowAd();
     CommonTool().initApp();
 
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.transparent, // 设置背景透明
+      body: Container(), // 空的Container，不显示任何内容
+    );
   }
 
 
