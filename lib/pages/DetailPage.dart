@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:share/share.dart';
 class DetailPage extends StatefulWidget {
   final dynamic post;
   final dynamic hint;
@@ -84,6 +85,18 @@ class DetailPageState extends State<DetailPage>  {
           title: Text(widget.post['title'],style: TextStyle(
             fontSize: 18, // 设置字体大小
           ),),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.share),
+              onPressed: () {
+                  var title =  widget.post["title"];
+                  var url = widget.post["guid"];
+                  var date = "发布时间:"+widget.post["date"];
+                  Share.share('$title\n$url\n$date');
+
+              },
+            ),
+          ],
         ),
         body:
               GestureDetector(

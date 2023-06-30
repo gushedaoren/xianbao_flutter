@@ -106,8 +106,6 @@ android {
             signingConfig signingConfigs.debug
 
         }
-      
-
     }
 }
 
