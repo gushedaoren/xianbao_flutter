@@ -65,24 +65,13 @@ class BLConfig {
 
   //腾讯广告
 
-  static var TencentAD_Android_ID_SHUMEI_HEALTH = "1200743851"; //树莓健康安卓id
-  static var TencentAD_IOS_ID_SHUMEI_HEALTH = "1200743565"; //树莓健康ios id
+  static var TencentAD_APPID = "1203397873";
 
-  static var TencentAD_Android_ID_KALULI = "1200746385"; //卡路里减肥安卓id
-  static var TencentAD_IOS_ID_KALULI = "1200746383"; //卡路里减肥ios id
 
-  static var TencentAD_Android_SPLASH_ID_SHUMEI_HEALTH =
-      "8083083219339580"; //树莓健康安卓开屏广告id
-  static var TencentAD_IOS_SPLASH_ID_SHUMEI_HEALTH =
-      "4093283244764225"; //树莓健康ios开屏广告id
+  static var TencentAD_Android_SPLASH_ID =
+      "2046404519187902"; //树莓健康安卓开屏广告id
 
-  static var TencentAD_Android_SPLASH_ID_KALULI =
-      "1063888229132424"; //卡路里减肥安卓开屏广告id
-  static var TencentAD_IOS_SPLASH_ID_KALULI =
-      "4003086226305906"; //卡路里减肥ios开屏广告id
 
-  static var IOS_PUSH_KEY = "541f22be878a7f6f9668a122";
-  static var ANDROID_PUSH_KEY = "541f22be878a7f6f9668a122";
 
   static var HUAWEI_APPID = "105461517";
   static var HUAWEI_PROJECTID = "737518067794446600";

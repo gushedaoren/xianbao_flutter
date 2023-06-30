@@ -339,6 +339,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.0.3"
+  flutter_qq_ads:
+    dependency: "direct main"
+    description:
+      name: flutter_qq_ads
+      sha256: "9f5d29c639eb82f477863a3554c8f8796fb7cd6856bab828b2eb4439fbc72ef6"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.5.0"
   flutter_spinkit:
     dependency: transitive
     description:

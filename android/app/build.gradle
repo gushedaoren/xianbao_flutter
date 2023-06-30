@@ -59,12 +59,12 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.brstory"
+        applicationId "com.goume.health"
         minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
 
-        versionCode 301
-        versionName "3.0.1"
+        versionCode 800
+        versionName "8.0"
 
         multiDexEnabled true
         dexOptions {

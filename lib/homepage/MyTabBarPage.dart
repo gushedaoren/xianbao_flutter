@@ -7,6 +7,7 @@ import 'package:beir_flutter/tool/RequestUtil.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_qq_ads/flutter_qq_ads.dart';
 
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,6 +34,11 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
   @override
   void initState() {
     super.initState();
+    FlutterQqAds.initAd(BLConfig.TencentAD_APPID);
+    FlutterQqAds.showSplashAd(
+      BLConfig.TencentAD_Android_SPLASH_ID,
+      fetchDelay: 5,
+    );
     CommonTool().initApp();
     _scrollController.addListener(_onScroll);
     _tabController = TabController(length: 5, vsync: this);
