@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:share/share.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-
+import 'package:http/http.dart' as http;
 class DetailPage extends StatefulWidget {
   final dynamic post;
   final dynamic hint;
@@ -39,27 +40,9 @@ class DetailPageState extends State<DetailPage>  {
             }
           </style>
           <script>
-            function setupContextMenu() {
-              var body = document.getElementsByTagName('body')[0];
-              body.addEventListener('contextmenu', function(event) {
-                var selectedText = window.getSelection().toString();
-                if (selectedText.length > 0) {
-                  window.flutter_inappwebview.callHandler('contextMenu', selectedText);
-                }
-              });
+            function handleImageLongPress(src) {
+              window.flutter_inappwebview.callHandler('handleImageLongPress', src);
             }
-            setupContextMenu();
-            function setupImageClickEvent() {
-            var images = document.getElementsByTagName('img');
-            for (var i = 0; i < images.length; i++) {
-              images[i].addEventListener('click', function(event) {
-                window.flutter_inappwebview.callHandler('imageClick', event.target.src);
-              });
-            }
-          }
-
-          setupContextMenu();
-          setupImageClickEvent();
           </script>
         </head>
         <body>
@@ -70,6 +53,13 @@ class DetailPageState extends State<DetailPage>  {
           原文连接：<a href="${widget.post['guid']}">${widget.post['guid']}</a>
           </br>
           </br>
+           <script>
+            // 遍历所有的img标签并添加onclick事件
+            var images = document.getElementsByTagName('img');
+            for (var i = 0; i < images.length; i++) {
+             images[i].setAttribute('oncontextmenu', 'event.preventDefault(); handleImageLongPress(this.src); return false;');
+            }
+          </script>
         </body>
       </html>
     ''';
@@ -78,28 +68,22 @@ class DetailPageState extends State<DetailPage>  {
   @override
   void initState() {
     super.initState();
-    if (_webViewController != null) {
-      _webViewController!.addJavaScriptHandler(
-        handlerName: 'contextMenu',
-        callback: (args) {
-          setState(() {
-            _selectedText = args[0];
-          });
-        },
-      );
-      _webViewController!.addJavaScriptHandler(
-        handlerName: 'imageClick',
-        callback: (args) async {
-          String imageUrl = args[0];
-          setState(() {
-            print("imageClick:$imageUrl");
-            _currentImageUrl = imageUrl;
-          });
-          // TODO: 调用Flutter代码进行放大显示图片
-        },
-      );
+
+  }
+  void saveImageToGallery(String imageUrl) async {
+    var response = await http.get(Uri.parse(imageUrl));
+
+    final result = await ImageGallerySaver.saveImage(
+      Uint8List.fromList(response.bodyBytes),
+    );
+
+    if (result['isSuccess']) {
+      print("Image saved successfully");
+    } else {
+      print("Failed to save image: ${result['errorMessage']}");
     }
   }
+
   @override
   Widget build(BuildContext context) {
     var htmlContent=getHtmlContent();
@@ -127,13 +111,39 @@ class DetailPageState extends State<DetailPage>  {
           child: Image.network(_currentImageUrl!),
         )
             :
-        GestureDetector(
-                  behavior: HitTestBehavior.opaque,
+        Center(
 
                   child: InAppWebView(
                     initialData: InAppWebViewInitialData(data: htmlContent),
                     onWebViewCreated: (controller) {
                       _webViewController = controller;
+                      if (_webViewController != null) {
+                        _webViewController!.addJavaScriptHandler(
+                          handlerName: 'contextMenu',
+                          callback: (args) {
+                            setState(() {
+                              print("contextMenu:$args");
+                              _selectedText = args[0];
+                            });
+                          },
+                        );
+                        controller.addJavaScriptHandler(handlerName: 'handleImageLongPress', callback: (args) {
+
+                          setState(() {
+                            String _currentImageUrl = args[0];
+                            print("handleImageLongPress:$_currentImageUrl");
+                            saveImageToGallery(_currentImageUrl);
+                            Fluttertoast.showToast(
+                              msg: '图片已保存到相册',
+                              toastLength: Toast.LENGTH_SHORT, // Toast持续时间，可以是Toast.LENGTH_SHORT或Toast.LENGTH_LONG
+                              gravity: ToastGravity.BOTTOM, // Toast显示的位置
+                              backgroundColor: Colors.black54, // Toast背景颜色
+                              textColor: Colors.white, // Toast文字颜色
+                              fontSize: 16.0, // Toast文字大小
+                            );
+                          });
+                        });
+                      }
                     },
                     initialOptions: InAppWebViewGroupOptions(
                       crossPlatform: InAppWebViewOptions(
@@ -147,14 +157,7 @@ class DetailPageState extends State<DetailPage>  {
                       print("shouldOverrideUrlLoading start");
                       final url = navigationAction.request.url.toString();
                       print('shouldOverrideUrlLoading: $url');
-                      // Fluttertoast.showToast(
-                      //   msg: '链接已复制',
-                      //   toastLength: Toast.LENGTH_SHORT, // Toast持续时间，可以是Toast.LENGTH_SHORT或Toast.LENGTH_LONG
-                      //   gravity: ToastGravity.BOTTOM, // Toast显示的位置
-                      //   backgroundColor: Colors.black54, // Toast背景颜色
-                      //   textColor: Colors.white, // Toast文字颜色
-                      //   fontSize: 16.0, // Toast文字大小
-                      // );
+
                       return NavigationActionPolicy.ALLOW;
                     },
                   ),)
