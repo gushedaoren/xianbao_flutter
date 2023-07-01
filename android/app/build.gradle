@@ -112,6 +112,11 @@ android {
 flutter {
     source '../..'
 }
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -119,22 +124,9 @@ dependencies {
    
     implementation fileTree(include:['*.jar'], dir:'libs')
 
+    implementation 'com.qq.e.union:union:4.531.1401' // 普通版本
 
 
-    
-
-
-//    // 接入荣耀厂商
-//    implementation 'cn.jiguang.sdk.plugin:honor:4.7.2'
-//
-//    // 接入魅族厂商
-//    implementation 'cn.jiguang.sdk.plugin:meizu:4.7.2'
-//    // 接入 VIVO 厂商
-//    implementation 'cn.jiguang.sdk.plugin:vivo:4.7.2'
-//    // 接入 OPPO 厂商
-//    implementation 'cn.jiguang.sdk.plugin:oppo:4.7.2'
-//    // 接入小米厂商
-//    implementation 'cn.jiguang.sdk.plugin:xiaomi:4.7.2'
 
 
 }

@@ -4,10 +4,10 @@ import 'package:beir_flutter/base/BLConfig.dart';
 import 'package:beir_flutter/pages/VpnPage.dart';
 import 'package:beir_flutter/tool/CommonTool.dart';
 import 'package:beir_flutter/tool/RequestUtil.dart';
-import 'package:dio/dio.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_qq_ads/flutter_qq_ads.dart';
+
 
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,10 +34,7 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
   Future<void> loadAndShowAd() async {
 
     setState(() {
-      FlutterQqAds.showSplashAd(
-        BLConfig.TencentAD_Android_SPLASH_ID,
-        fetchDelay: 5,
-      );
+
     });
 
   }
@@ -142,7 +139,7 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
 
   getProductList() async {
 
-    var url_get = BLConfig.domain + "/posts?tagid=$tagid&lastid=$lastid&keyword=$keyword&platform=android";
+    var url_get = BLConfig.domain + "/GetPosts?tagid=$tagid&lastid=$lastid&keyword=$keyword&platform=android";
     print(url_get);
 
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -150,7 +147,7 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
 
     var queryParams = {'userid': userid};
     print("homepageurl:$url_get");
-    var response = await RequestUtil.dio.get(url_get, queryParameters: queryParams);
+    var response = await RequestUtil.dio.post(url_get, queryParameters: queryParams);
 
     setState(() {
       if(lastid==""){

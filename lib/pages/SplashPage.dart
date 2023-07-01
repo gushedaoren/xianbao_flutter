@@ -8,11 +8,8 @@ import 'package:beir_flutter/tool/RequestUtil.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_qq_ads/flutter_qq_ads.dart';
+import 'package:flutter/services.dart';
 
-import 'package:package_info/package_info.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../pages/DetailPage.dart';
 
@@ -33,14 +30,13 @@ class _SplashPageState extends State<SplashPage>  {
   }
 
   Future<void> loadAndShowAd() async {
-    await FlutterQqAds.initAd(BLConfig.TencentAD_APPID); // 替换为你的 QQ 广告 App ID
-    // await Future.delayed(Duration(seconds: 5)); // 延迟 5 秒钟展示广告
 
-    FlutterQqAds.showSplashAd(
-      BLConfig.TencentAD_Android_SPLASH_ID,
-      fetchDelay: 5,
-    );
 
+  }
+  @override
+  void dispose() {
+    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values); // 恢复标题栏相关的覆盖物
+    super.dispose();
   }
   @override
   void initState() {
@@ -48,14 +44,16 @@ class _SplashPageState extends State<SplashPage>  {
 
     loadAndShowAd();
     CommonTool().initApp();
-
+    SystemChrome.setEnabledSystemUIOverlays([]); // 设置标题栏相关的覆盖物为空列表
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent, // 设置背景透明
-      body: Container(), // 空的Container，不显示任何内容
+    double screenHeight = MediaQuery.of(context).size.height; // 获取设备屏幕高度
+    double adContainerHeight = screenHeight * 0.95; // 计算广告容器的高度
+    return  Container(
+        height: adContainerHeight,
+
     );
   }
 

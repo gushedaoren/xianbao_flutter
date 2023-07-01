@@ -377,16 +377,16 @@ genHeader() async {
   // print("build config:");
   var headers = {};
   if (Platform.isAndroid) {
-    // headers['Deviceid'] = BLConstant.androidDeviceInfo!.androidId;
-    // headers['DeviceName'] = BLConstant.androidDeviceInfo!.product.toString();
-    // headers['DeviceModel'] = BLConstant.androidDeviceInfo!.model;
-    // headers['Brand'] = BLConstant.androidDeviceInfo!.brand;
-    // BLConstant.brand = BLConstant.androidDeviceInfo!.brand!;
-    // headers['IsPhysicalDevice'] =
-    //     BLConstant.androidDeviceInfo!.isPhysicalDevice;
-    // headers['Manufacturer'] = BLConstant.androidDeviceInfo!.manufacturer;
-    // headers['SystemVersion'] = BLConstant.androidDeviceInfo!.version.release;
-    // headers['SystemName'] = BLConstant.androidDeviceInfo!.version.baseOS;
+    headers['Deviceid'] = BLConstant.androidDeviceInfo!.androidId;
+    headers['DeviceName'] = BLConstant.androidDeviceInfo!.product.toString();
+    headers['DeviceModel'] = BLConstant.androidDeviceInfo!.model;
+    headers['Brand'] = BLConstant.androidDeviceInfo!.brand;
+    BLConstant.brand = BLConstant.androidDeviceInfo!.brand!;
+    headers['IsPhysicalDevice'] =
+        BLConstant.androidDeviceInfo!.isPhysicalDevice;
+    headers['Manufacturer'] = BLConstant.androidDeviceInfo!.manufacturer;
+    headers['SystemVersion'] = BLConstant.androidDeviceInfo!.version.release;
+    headers['SystemName'] = BLConstant.androidDeviceInfo!.version.baseOS;
     headers['Platform'] = "android";
     headers['Channel'] = BLConfig.Channel;
   } else if (Platform.isIOS) {

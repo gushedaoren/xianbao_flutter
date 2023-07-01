@@ -53,7 +53,6 @@ dependencies:
   app_settings: 4.2.0
   share: ^2.0.4
   package_info: ^2.0.2
-  flutter_qq_ads: ^2.5.0
   flutter_cache_manager: ^3.3.0
   image_gallery_saver: ^1.6.7
   http: ^0.13.3
