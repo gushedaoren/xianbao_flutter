@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:share/share.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+
 class DetailPage extends StatefulWidget {
   final dynamic post;
   final dynamic hint;
@@ -18,7 +20,7 @@ class DetailPageState extends State<DetailPage>  {
 
   String? _selectedText;
   late ContextMenu contextMenu;
-
+  String? _currentImageUrl;
   getHtmlContent(){
     final String htmlContent = '''
       <html>
@@ -32,8 +34,8 @@ class DetailPageState extends State<DetailPage>  {
             img {
               max-width: 80%;
               height: auto;
-              margin-left: auto;
-              margin-right: auto;
+              margin-left: 16px;
+              margin-right: 16px;
             }
           </style>
           <script>
@@ -47,6 +49,17 @@ class DetailPageState extends State<DetailPage>  {
               });
             }
             setupContextMenu();
+            function setupImageClickEvent() {
+            var images = document.getElementsByTagName('img');
+            for (var i = 0; i < images.length; i++) {
+              images[i].addEventListener('click', function(event) {
+                window.flutter_inappwebview.callHandler('imageClick', event.target.src);
+              });
+            }
+          }
+
+          setupContextMenu();
+          setupImageClickEvent();
           </script>
         </head>
         <body>
@@ -74,6 +87,17 @@ class DetailPageState extends State<DetailPage>  {
           });
         },
       );
+      _webViewController!.addJavaScriptHandler(
+        handlerName: 'imageClick',
+        callback: (args) async {
+          String imageUrl = args[0];
+          setState(() {
+            print("imageClick:$imageUrl");
+            _currentImageUrl = imageUrl;
+          });
+          // TODO: 调用Flutter代码进行放大显示图片
+        },
+      );
     }
   }
   @override
@@ -98,8 +122,12 @@ class DetailPageState extends State<DetailPage>  {
             ),
           ],
         ),
-        body:
-              GestureDetector(
+        body:_currentImageUrl != null
+            ? Center(
+          child: Image.network(_currentImageUrl!),
+        )
+            :
+        GestureDetector(
                   behavior: HitTestBehavior.opaque,
 
                   child: InAppWebView(

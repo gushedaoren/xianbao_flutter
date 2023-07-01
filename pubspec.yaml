@@ -54,6 +54,7 @@ dependencies:
   share: ^2.0.4
   package_info: ^2.0.2
   flutter_qq_ads: ^2.5.0
+  flutter_cache_manager: ^3.3.0
 
 
 dev_dependencies:
