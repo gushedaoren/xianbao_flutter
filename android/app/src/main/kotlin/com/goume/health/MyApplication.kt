@@ -1,7 +1,7 @@
 package com.goume.health
 
 import android.app.Application
-import com.qq.e.comm.managers.GDTAdSdk
+
 class MyApplication : Application() {
 
     override fun onCreate() {

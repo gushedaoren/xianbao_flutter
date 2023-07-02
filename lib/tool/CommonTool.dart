@@ -90,16 +90,14 @@ class CommonTool {
   initApp() async {
     print("start initApp");
 
-    if (Platform.isAndroid) {
-      print("initApp android");
-    } else {
-      bool hasgetPackageInfo = await getPackageInfo();
 
-      bool hasGetDeviceInfo = await getDeviceInfo();
+    bool hasgetPackageInfo = await getPackageInfo();
 
-      print("hasgetPackageInfo:$hasgetPackageInfo");
-      print("hasGetDeviceInfo:$hasGetDeviceInfo");
-    }
+    bool hasGetDeviceInfo = await getDeviceInfo();
+
+    print("hasgetPackageInfo:$hasgetPackageInfo");
+    print("hasGetDeviceInfo:$hasGetDeviceInfo");
+
     RequestUtil.initDio();
     RequestUtil.doAction("initApp");
     // RequestUtil().pickBaseDomain();
@@ -110,11 +108,7 @@ class CommonTool {
     prefs.setInt("initApp", initAppCount);
     prefs.commit();
     await initAd();
-    if (Platform.isAndroid) {
 
-    }
-
-    // SdkTool().initJPush();
   }
 
   /// 吊起QQ
@@ -192,9 +186,9 @@ class CommonTool {
     if (Platform.isAndroid) {
       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
       BLConstant.platform = "android";
-      // BLConstant.androidDeviceInfo = await deviceInfo.androidInfo;
-      //
-      // print(deviceInfo);
+      BLConstant.androidDeviceInfo = await deviceInfo.androidInfo;
+
+      print(deviceInfo);
       return true;
     } else if (Platform.isIOS) {
       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
