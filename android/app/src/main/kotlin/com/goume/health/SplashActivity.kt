@@ -57,16 +57,19 @@ class SplashActivity : Activity() {
         setContentView(R.layout.activity_splash)
 
         showStartupAd()
+//        startClock()
     }
-
-    private fun startMainActivity() {
-//        val intent = Intent(this, MainActivity::class.java)
-//        startActivity(intent)
-//        finish()
-
+    private  fun startClock(){
         // 启动悬浮窗口服务
         val serviceIntent = Intent(this, FloatingTimeService::class.java)
         startService(serviceIntent)
-//        finish()
+    }
+
+    private fun startMainActivity() {
+        print("do startMainActivity")
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+
     }
 }
