@@ -20,6 +20,8 @@ class VpnPage extends StatefulWidget {
 
 class _VpnPageState extends State<VpnPage> {
   var proxyList = [];
+  var keyword="";
+  TextEditingController textcontroller = TextEditingController();
   static const platform = const MethodChannel('wifi_proxy_channel');
 
   void setWifiProxy(String proxyAddress, String proxyPort) async {
@@ -42,9 +44,7 @@ class _VpnPageState extends State<VpnPage> {
   Future<void> fetchProxyList() async {
     final url_get = BLConfig.domain +'/proxyall';
     print("fetchProxyList url_get:$url_get");
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var userid = sharedPreferences.getString("userid");
-    var queryParams = {'userid': userid};
+    var queryParams = {'keyword': keyword};
     var response = await RequestUtil.dio.get(url_get, queryParameters: queryParams,options: Options(
       // responseType: ResponseType.plain, // 指定接收纯文本响应
     ),);
@@ -135,13 +135,48 @@ class _VpnPageState extends State<VpnPage> {
       appBar: AppBar(
         title: Text('城市切换'),
       ),
-      body: ListView.builder(
-        itemCount: proxyList.length,
-        itemBuilder: (context, index) {
-          final proxy = proxyList[index];
-          return getListItem(proxy);
-        },
+      body:Column(
+        children: [
+      Padding(
+      padding: EdgeInsets.only(top: 5.0),
+         child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 16.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            color: Colors.grey[200], // 设置背景颜色
+          ),
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: '搜索城市',
+              border: InputBorder.none, // 移除TextField的默认边框
+              contentPadding: EdgeInsets.symmetric(horizontal: 16.0), // 设置输入框内边距
+            ),
+            controller: textcontroller, // 将controller绑定到TextField组件
+
+            onChanged: (value) {
+              setState(() {
+                print("onChange:$value");
+                keyword=value;
+                fetchProxyList();
+
+              });
+
+            },
+          ),
+        ),
       ),
+          Expanded(child: ListView.builder(
+            itemCount: proxyList.length,
+            itemBuilder: (context, index) {
+              final proxy = proxyList[index];
+              return getListItem(proxy);
+            },
+          ),)
+
+        ],
+      )
+
+
     );
   }
 }

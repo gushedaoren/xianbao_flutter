@@ -23,6 +23,7 @@ class MyTabBarPage extends StatefulWidget {
 class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   late PageController _pageController;
+  TextEditingController textcontroller = TextEditingController();
   ScrollController _scrollController = ScrollController();
   bool isLoading = true;
   var posts=[];
@@ -147,7 +148,7 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
 
     var queryParams = {'userid': userid};
     print("homepageurl:$url_get");
-    var response = await RequestUtil.dio.post(url_get, queryParameters: queryParams);
+    var response = await RequestUtil.dio.get(url_get, queryParameters: queryParams);
 
     setState(() {
       if(lastid==""){
@@ -261,7 +262,35 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
           child: Column(
             mainAxisSize: MainAxisSize.min, // 设置为 MainAxisSize.min
             children: [
+            Padding(
+            padding: EdgeInsets.only(top: 5.0),
+            child:  Container(
+                margin: EdgeInsets.symmetric(horizontal: 16.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  color: Colors.grey[200], // 设置背景颜色
+                ),
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: '搜索内容',
+                    border: InputBorder.none, // 移除TextField的默认边框
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16.0), // 设置输入框内边距
+                  ),
+                  controller: textcontroller, // 将controller绑定到TextField组件
 
+                  onChanged: (value) {
+                    setState(() {
+                      print("onChange:$value");
+                      keyword=value;
+                      lastid="";
+                      getProductList();
+
+                    });
+
+                  },
+                ),
+              ),
+            ),
               Expanded(
                 child: PageView.builder(
                   controller: _pageController,
