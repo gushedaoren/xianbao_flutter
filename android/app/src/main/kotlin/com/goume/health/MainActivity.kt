@@ -1,4 +1,4 @@
-package com.shumei.xianbao
+package com.goume.health
 
 
 import android.app.Activity.RESULT_OK
