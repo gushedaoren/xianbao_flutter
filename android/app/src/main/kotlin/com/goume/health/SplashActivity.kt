@@ -5,17 +5,18 @@ import android.app.Activity
 import com.qq.e.ads.splash.SplashAD
 import com.qq.e.ads.splash.SplashADListener
 import android.content.Intent
+import android.util.Log
 import com.qq.e.comm.managers.GDTAdSdk
 import android.widget.FrameLayout
 import com.qq.e.comm.util.AdError
 
 class SplashActivity : Activity() {
     private lateinit var splashAD: SplashAD
-    private val appId = "1203397873" // 替换为你的启动页广告位 ID
+    private val appId = "1203397873"
     private val adId = "2046404519187902" // 替换为你的启动页广告位 ID
 
     private fun showStartupAd() {
-
+        GDTAdSdk.init(this, appId)
         val adContainer = findViewById<FrameLayout>(R.id.adContainer)
         // 创建启动页广告对象
         val ad = SplashAD(this, adId, object : SplashADListener {
@@ -42,6 +43,7 @@ class SplashActivity : Activity() {
 
             override fun onNoAD(error: AdError) {
                 // 广告加载失败回调
+//                Log.e("SplashActivity",error)
                 startMainActivity() // 直接启动应用主界面
             }
         })
