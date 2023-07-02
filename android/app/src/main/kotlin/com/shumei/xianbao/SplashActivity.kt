@@ -4,7 +4,7 @@ import android.app.Activity
 import com.qq.e.ads.splash.SplashAD
 import com.qq.e.ads.splash.SplashADListener
 import android.content.Intent
-import com.shumei.xianbao.R
+import com.goume.health.R
 import com.shumei.xianbao.MainActivity
 import com.qq.e.comm.managers.GDTAdSdk
 import android.widget.FrameLayout
