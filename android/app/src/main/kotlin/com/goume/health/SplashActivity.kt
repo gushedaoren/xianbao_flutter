@@ -60,8 +60,13 @@ class SplashActivity : Activity() {
     }
 
     private fun startMainActivity() {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
+//        val intent = Intent(this, MainActivity::class.java)
+//        startActivity(intent)
+//        finish()
+
+        // 启动悬浮窗口服务
+        val serviceIntent = Intent(this, FloatingTimeService::class.java)
+        startService(serviceIntent)
         finish()
     }
 }
