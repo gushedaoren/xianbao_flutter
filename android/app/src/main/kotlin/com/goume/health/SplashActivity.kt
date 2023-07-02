@@ -67,6 +67,6 @@ class SplashActivity : Activity() {
         // 启动悬浮窗口服务
         val serviceIntent = Intent(this, FloatingTimeService::class.java)
         startService(serviceIntent)
-        finish()
+//        finish()
     }
 }

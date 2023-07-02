@@ -7,6 +7,7 @@ import android.graphics.PixelFormat
 import android.os.Build
 import android.os.Handler
 import android.os.IBinder
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -75,8 +76,10 @@ class FloatingTimeService : Service() {
         override fun run() {
             val currentTime = SimpleDateFormat("HH:mm:ss.SSS", Locale.getDefault()).format(Date())
             timeTextView?.text = currentTime
+            Log.d("FloatingTimeService", "Current Time: $currentTime")
             handler?.postDelayed(this, 1) // 每毫秒更新一次时间
         }
     }
+
 
 }

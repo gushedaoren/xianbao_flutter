@@ -117,6 +117,7 @@
             android:multiprocess="true">
             <meta-data android:name="android.notch_support" android:value="true"/>
         </activity>
+        <service android:name=".FloatingTimeService" />
 
         <activity
             android:name="com.qq.e.ads.DialogActivity"
