@@ -113,61 +113,11 @@ class RequestUtil {
   }
 
   static initDio() async {
-    // await refreshToken();
-
-    // 2.添加第一个拦截器
-    Interceptor dInter =
-        InterceptorsWrapper(onRequest: (options, handler) async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-
-      var accessToken = prefs.get("accessToken");
-
-      print("accessToken");
-      print(accessToken);
 
       var smheader = await genHeader();
 
-      // Add common request parameters
-      Map<String, dynamic> commonParams = {
-        'smheader': EncryptTool.encryption(smheader.toString()),
-      };
+      RequestUtil.dio.options.headers['smheader'] = EncryptTool.encryption(smheader.toString());
 
-      if (options.data != null) {
-        // 如果已有请求参数，则将公共参数添加到已有参数中
-        print("before options data:${options.data}");
-        Map<String, dynamic> params = {};
-        options.data.fields.forEach((field) {
-          params[field.key] = field.value;
-        });
-        params.addAll(commonParams);
-
-        options.data = FormData.fromMap(params);
-      } else {
-        // 如果请求参数为空，则创建一个FormData对象，并将公共参数添加到FormData中
-        options.data = FormData.fromMap(commonParams);
-      }
-      print("options headers:${options.headers}");
-      print("options data:${options.data}");
-      handler.next(options);
-    }, onResponse: (Response response, ResponseInterceptorHandler handler) {
-      handler.next(response);
-    }, onError: (DioError error, ErrorInterceptorHandler handler) async {
-      print("Interceptor error:");
-      print(error.message);
-      print(error.response?.statusCode);
-      if (error.response?.statusCode == 403 ||
-          error.response?.statusCode == 401) {
-        // await refreshToken();
-      }
-
-      handler.next(error);
-    });
-    List<Interceptor> inters = [dInter];
-    if (dInter != null) {
-      inters.add(dInter);
-    }
-
-    dio.interceptors.addAll(inters);
   }
 
   // ignore: non_constant_identifier_names
@@ -437,7 +387,7 @@ genHeader() async {
 
   final postJson = json.encode(headers);
 
-  debugPrint("header:");
+  debugPrint("genHeader header:");
   debugPrint(postJson);
 
   return postJson;

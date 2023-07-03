@@ -12,7 +12,7 @@ class BLConfig {
 
   static int QQGroup = 790242370;
 
-  static String API_HEALTH = "/xianbaov2"; //生产环境
+  static String API_HEALTH = "/xianbao"; //生产环境
 
   // static String API_HEALTH = "/beirtest"; //测试环境
 

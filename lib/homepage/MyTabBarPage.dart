@@ -4,6 +4,7 @@ import 'package:beir_flutter/base/BLConfig.dart';
 import 'package:beir_flutter/pages/SettingsPage.dart';
 import 'package:beir_flutter/pages/VpnPage.dart';
 import 'package:beir_flutter/tool/CommonTool.dart';
+import 'package:beir_flutter/tool/EncryptTool.dart';
 import 'package:beir_flutter/tool/RequestUtil.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -44,13 +45,14 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
   void initState() {
 
     super.initState();
-    loadAndShowAd();
-    CommonTool().initApp();
-    _scrollController.addListener(_onScroll);
-    _tabController = TabController(length: 5, vsync: this);
-    _pageController = PageController(initialPage: 0); // Initialize the PageController
-    checkUpdate();
-    getProductList();
+    Future.delayed(Duration.zero, () async {
+      await CommonTool().initApp();
+      _scrollController.addListener(_onScroll);
+      _tabController = TabController(length: 5, vsync: this);
+      _pageController = PageController(initialPage: 0); // Initialize the PageController
+      checkUpdate();
+      getProductList();
+    });
   }
   Widget _buildLoader() {
     return isLoading
@@ -144,12 +146,9 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
     var url_get = BLConfig.domain + "/GetPosts?tagid=$tagid&lastid=$lastid&keyword=$keyword&platform=android";
     print(url_get);
 
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var userid = sharedPreferences.getString("userid");
-
-    var queryParams = {'userid': userid};
     print("homepageurl:$url_get");
-    var response = await RequestUtil.dio.get(url_get, queryParameters: queryParams);
+
+    var response = await RequestUtil.dio.get(url_get);
 
     setState(() {
       if(lastid==""){

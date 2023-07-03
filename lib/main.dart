@@ -2,6 +2,7 @@ import 'package:beir_flutter/base/BLConfig.dart';
 import 'package:beir_flutter/homepage/MyHomePage.dart';
 import 'package:beir_flutter/homepage/MyTabBarPage.dart';
 import 'package:beir_flutter/pages/SplashPage.dart';
+import 'package:beir_flutter/tool/CommonTool.dart';
 import 'package:flutter/material.dart';
 
 import 'package:one_context/one_context.dart';

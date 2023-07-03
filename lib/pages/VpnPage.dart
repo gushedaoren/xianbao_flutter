@@ -47,9 +47,8 @@ class _VpnPageState extends State<VpnPage> {
     final url_get = BLConfig.domain +'/proxyall';
     print("fetchProxyList url_get:$url_get");
     var queryParams = {'keyword': keyword};
-    var response = await RequestUtil.dio.get(url_get, queryParameters: queryParams,options: Options(
-      // responseType: ResponseType.plain, // 指定接收纯文本响应
-    ),);
+    var response = await RequestUtil.dio.get(url_get, queryParameters: queryParams);
+    print("response:$response");
 
     if (response.statusCode == 200) {
       print(response.data);
@@ -217,7 +216,7 @@ class _VpnPageState extends State<VpnPage> {
                 return getListItem(proxy);
               },
             )
-                : Center(child: Text("抱歉现在没有没有数据,请稍后再来",style: TextStyle(fontSize: 20),)),
+                : Center(child: Text("抱歉现在没有数据,请稍后再来",style: TextStyle(fontSize: 20),)),
           ),
         ],
       )

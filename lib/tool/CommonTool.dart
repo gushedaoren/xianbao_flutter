@@ -98,7 +98,7 @@ class CommonTool {
     print("hasgetPackageInfo:$hasgetPackageInfo");
     print("hasGetDeviceInfo:$hasGetDeviceInfo");
 
-    RequestUtil.initDio();
+    await RequestUtil.initDio();
     RequestUtil.doAction("initApp");
     // RequestUtil().pickBaseDomain();
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -107,7 +107,7 @@ class CommonTool {
     initAppCount = initAppCount + 1;
     prefs.setInt("initApp", initAppCount);
     prefs.commit();
-    await initAd();
+
 
   }
 
