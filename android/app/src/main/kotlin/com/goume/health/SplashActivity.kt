@@ -59,11 +59,7 @@ class SplashActivity : Activity() {
         showStartupAd()
 //        startClock()
     }
-    private  fun startClock(){
-        // 启动悬浮窗口服务
-        val serviceIntent = Intent(this, FloatingTimeService::class.java)
-        startService(serviceIntent)
-    }
+
 
     private fun startMainActivity() {
         print("do startMainActivity")

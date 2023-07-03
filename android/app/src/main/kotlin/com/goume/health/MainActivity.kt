@@ -20,40 +20,25 @@ import io.flutter.plugin.common.MethodChannel
 
 
 class MainActivity : FlutterActivity() {
-    private val CHANNEL = "wifi_proxy_channel"
-
-
-    override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
+    private val methodChannel = "floating_time_service"
+    private  fun startClock(){
+        // 启动悬浮窗口服务
+        val serviceIntent = Intent(this, FloatingTimeService::class.java)
+        startService(serviceIntent)
+    }
+    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
-
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
-            when (call.method) {
-                "setWifiProxy" -> {
-                    val proxyAddress = call.argument<String>("proxyAddress")
-                    val proxyPort = call.argument<String>("proxyPort")
-                    // 调用原生方法设置WiFi代理地址
-                    setWifiProxy(proxyAddress, proxyPort)
-                    result.success(null)
-                }
-                else -> {
-                    result.notImplemented()
-                }
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, methodChannel).setMethodCallHandler { call, result ->
+            if (call.method == "start_service") {
+                print("configureFlutterEngine start")
+                startClock()
+                result.success(true)
+            } else {
+                result.notImplemented()
             }
         }
     }
 
 
-    // 启动VPN服务
-    private fun startVpnService() {
-
-        val serviceIntent = Intent(this, MyVpnService::class.java)
-        startService(serviceIntent)
-
-    }
-    private fun setWifiProxy(proxyAddress: String?, proxyPort: String?) {
-        Log.d("MainActivity", "start setWifiProxy")
-        startVpnService()
-
-    }
 
 }
