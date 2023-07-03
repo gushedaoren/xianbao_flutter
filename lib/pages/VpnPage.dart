@@ -21,6 +21,7 @@ class VpnPage extends StatefulWidget {
 class _VpnPageState extends State<VpnPage> {
   var proxyList = [];
   var keyword="";
+  var help_url="";
   TextEditingController textcontroller = TextEditingController();
   static const platform = const MethodChannel('wifi_proxy_channel');
 
@@ -54,6 +55,7 @@ class _VpnPageState extends State<VpnPage> {
       setState(() {
         proxyList = response.data["datas"];
         print(proxyList);
+        help_url = response.data["help_url"];
       });
     } else {
       // 处理请求失败的情况
@@ -67,7 +69,46 @@ class _VpnPageState extends State<VpnPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('提示'),
-          content: Text('即将跳转到WiFi设置界面'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    '即将跳转到WiFi设置界面',
+                    style: TextStyle(
+                      fontSize: 18, // 设置字体大小
+                      fontWeight: FontWeight.bold, // 加粗字体
+                    ),
+                  ),
+                ],
+              ),
+
+              SizedBox(height: 10), // 添加10个像素的垂直间距
+              Wrap(
+                children: [
+
+                  Text("使用帮助:"),
+                  GestureDetector(
+                    onTap: () {
+                      launchUrl(Uri.parse(help_url)); // 使用launch函数打开链接
+                    },
+                    child: Text(
+                      help_url,
+                      style: TextStyle(
+                        decoration: TextDecoration.underline, // 可选：添加下划线以指示链接
+                        color: Colors.blue, // 可选：设置链接颜色
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+
+
+            ],
+          ),
+
           actions: [
             ElevatedButton(
               onPressed: () {
