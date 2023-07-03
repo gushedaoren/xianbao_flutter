@@ -1,3 +1,4 @@
+import 'package:beir_flutter/base/BLConstant.dart';
 import 'package:beir_flutter/pages/VpnPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
@@ -43,7 +44,13 @@ class SettingsPage extends StatelessWidget {
             },
           ),
           ListTile(
-            title: Text('版本信息:'),
+            title: Text('分享App'),
+            onTap: () {
+              // 处理显示设置的点击事件
+            },
+          ),
+          ListTile(
+            title: Text('版本信息: v'+BLConstant.version),
             onTap: () {
               // 处理显示设置的点击事件
             },

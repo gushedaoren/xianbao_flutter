@@ -21,6 +21,7 @@ import 'package:launch_review/launch_review.dart';
 
 import 'package:ndialog/ndialog.dart';
 import 'package:one_context/one_context.dart';
+import 'package:package_info/package_info.dart';
 
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -51,15 +52,14 @@ class CommonTool {
   }
 
   static getPackageInfo() async {
-    // PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    // BLConstant.appName = packageInfo.appName;
-    // BLConstant.packageName = packageInfo.packageName;
-    // BLConstant.version = packageInfo.version;
-    // BLConstant.buildNumber = packageInfo.buildNumber;
-    //
-    // return true;
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    BLConstant.appName = packageInfo.appName;
+    BLConstant.packageName = packageInfo.packageName;
+    BLConstant.version = packageInfo.version;
+    BLConstant.buildNumber = packageInfo.buildNumber;
 
-    return false;
+    return true;
+
   }
 
   static initAd() async {
