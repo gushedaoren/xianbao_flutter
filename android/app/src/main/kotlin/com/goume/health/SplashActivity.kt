@@ -12,8 +12,8 @@ import com.qq.e.comm.util.AdError
 
 class SplashActivity : Activity() {
     private lateinit var splashAD: SplashAD
-    private val appId = "1203397873"
-    private val adId = "2046404519187902" // 替换为你的启动页广告位 ID
+    private val appId = "1203398028"
+    private val adId = "2076800797797523" // 替换为你的启动页广告位 ID
 
     private fun showStartupAd() {
         GDTAdSdk.init(this, appId)
