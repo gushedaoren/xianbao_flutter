@@ -30,10 +30,12 @@ class DetailPageState extends State<DetailPage>  {
             body {
               margin-left: 16px;
               margin-right: 16px;
-              font-size: 36px; /* 设置字体大小 */
+              font-size: 42px; /* 设置字体大小 */
+              text-align: left; /* 设置文本左对齐 *
+              word-wrap: break-word; /* 自动换行 */
             }
             img {
-              max-width: 80%;
+              max-width: 90%;
               height: auto;
               margin-left: 16px;
               margin-right: 16px;

@@ -185,7 +185,10 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
           itemBuilder: (BuildContext context, int index) {
             if (index < posts.length) {
               return ListTile(
-                title: Text(posts[index]['title']),
+                title: Text(posts[index]['title'],
+                  style: TextStyle(
+                    color: posts[index]['is_top'] ? Colors.red : Colors.black,
+                  ),),
                 subtitle: Text(posts[index]['date']),
 
                 onTap: () {
