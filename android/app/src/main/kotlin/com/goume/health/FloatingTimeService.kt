@@ -10,13 +10,14 @@ import android.os.IBinder
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
+import android.widget.ImageButton
 import android.widget.TextView
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-
 class FloatingTimeService : Service() {
 
     private var overlayView: View? = null
@@ -24,6 +25,13 @@ class FloatingTimeService : Service() {
     private var layoutParams: WindowManager.LayoutParams? = null
     private var timeTextView: TextView? = null
     private var handler: Handler? = null
+
+    private var initialX: Int = 0
+    private var initialY: Int = 0
+    private var initialTouchX: Float = 0f
+    private var initialTouchY: Float = 0f
+
+    private var closeButton:ImageButton?=null
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
@@ -59,9 +67,43 @@ class FloatingTimeService : Service() {
         windowManager?.addView(overlayView, layoutParams)
 
         timeTextView = overlayView?.findViewById(R.id.timeTextView)
+        closeButton = overlayView?.findViewById<ImageButton>(R.id.closeButton)
+        closeButton?.setOnClickListener {
+            stopSelf()
+        }
 
         handler = Handler()
         handler?.post(updateTimeRunnable)
+
+        overlayView?.setOnTouchListener { view, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    initialX = layoutParams?.x ?: 0
+                    initialY = layoutParams?.y ?: 0
+                    initialTouchX = event.rawX
+                    initialTouchY = event.rawY
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    val offsetX = event.rawX - initialTouchX
+                    val offsetY = event.rawY - initialTouchY
+
+                    layoutParams?.x = (initialX + offsetX).toInt()
+                    layoutParams?.y = (initialY + offsetY).toInt()
+
+                    windowManager?.updateViewLayout(overlayView, layoutParams)
+                }
+                MotionEvent.ACTION_UP -> {
+                    val offsetX = event.rawX - initialTouchX
+                    val offsetY = event.rawY - initialTouchY
+                    val clickThreshold = 10
+
+                    if (Math.abs(offsetX) < clickThreshold && Math.abs(offsetY) < clickThreshold) {
+//                        stopSelf()
+                    }
+                }
+            }
+            true
+        }
     }
 
     override fun onDestroy() {
@@ -69,6 +111,7 @@ class FloatingTimeService : Service() {
         if (overlayView != null) {
             windowManager?.removeView(overlayView)
         }
+        closeButton?.setOnClickListener(null)
         handler?.removeCallbacks(updateTimeRunnable)
     }
 
@@ -77,9 +120,7 @@ class FloatingTimeService : Service() {
             val currentTime = SimpleDateFormat("HH:mm:ss.SSS", Locale.getDefault()).format(Date())
             timeTextView?.text = currentTime
             Log.d("FloatingTimeService", "Current Time: $currentTime")
-            handler?.postDelayed(this, 1) // 每毫秒更新一次时间
+            handler?.postDelayed(this, 1)
         }
     }
-
-
 }
