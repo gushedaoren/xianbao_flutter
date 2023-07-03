@@ -22,6 +22,7 @@ class _VpnPageState extends State<VpnPage> {
   var proxyList = [];
   var keyword="";
   var help_url="";
+  var proxyCount=0;
   TextEditingController textcontroller = TextEditingController();
   static const platform = const MethodChannel('wifi_proxy_channel');
 
@@ -56,6 +57,7 @@ class _VpnPageState extends State<VpnPage> {
         proxyList = response.data["datas"];
         print(proxyList);
         help_url = response.data["help_url"];
+        proxyCount=response.data['count'];
       });
     } else {
       // 处理请求失败的情况
@@ -206,14 +208,17 @@ class _VpnPageState extends State<VpnPage> {
           ),
         ),
       ),
-          Expanded(child: ListView.builder(
-            itemCount: proxyList.length,
-            itemBuilder: (context, index) {
-              final proxy = proxyList[index];
-              return getListItem(proxy);
-            },
-          ),)
-
+          Expanded(
+            child: (proxyCount > 0)
+                ? ListView.builder(
+              itemCount: proxyList.length,
+              itemBuilder: (context, index) {
+                final proxy = proxyList[index];
+                return getListItem(proxy);
+              },
+            )
+                : Center(child: Text("抱歉现在没有没有数据,请稍后再来",style: TextStyle(fontSize: 20),)),
+          ),
         ],
       )
 
