@@ -180,14 +180,17 @@ class _VpnPageState extends State<VpnPage> {
       body:Column(
         children: [
       Padding(
-      padding: EdgeInsets.only(top: 5.0),
+      padding: EdgeInsets.only(top: 10.0),
          child: Container(
+           height: 40,
           margin: EdgeInsets.symmetric(horizontal: 16.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),
             color: Colors.grey[200], // 设置背景颜色
           ),
-          child: TextField(
+          child:
+          TextField(
+            textAlignVertical: TextAlignVertical.top,
             decoration: InputDecoration(
               hintText: '搜索城市',
               border: InputBorder.none, // 移除TextField的默认边框

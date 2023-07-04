@@ -200,32 +200,41 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
             mainAxisSize: MainAxisSize.min, // 设置为 MainAxisSize.min
             children: [
             Padding(
-            padding: EdgeInsets.only(top: 5.0),
+            padding: EdgeInsets.only(top: 10.0),
             child:  Container(
-                margin: EdgeInsets.symmetric(horizontal: 16.0),
+                height: 40,
+                margin: EdgeInsets.symmetric(horizontal: 16.0,vertical: 0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.0),
                   color: Colors.grey[200], // 设置背景颜色
                 ),
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: '搜索内容',
-                    border: InputBorder.none, // 移除TextField的默认边框
-                    contentPadding: EdgeInsets.symmetric(horizontal: 16.0), // 设置输入框内边距
-                  ),
-                  controller: textcontroller, // 将controller绑定到TextField组件
+                  child: Center(
+                    child: TextField(
+                      textAlignVertical: TextAlignVertical.top,
+                      decoration: InputDecoration(
+                        hintText: '搜索内容',
+                        border: InputBorder.none, // 移除TextField的默认边框
+                        contentPadding: EdgeInsets.symmetric(horizontal: 16.0,vertical: 0), // 设置输入框内
+                      ),
+                      controller: textcontroller, // 将controller绑定到TextField组件
 
-                  onChanged: (value) {
-                    setState(() {
-                      print("onChange:$value");
-                      keyword=value;
-                      lastid="";
-                      getProductList();
+                      onChanged: (value) {
+                        setState(() {
+                          print("onChange:$value");
+                          keyword=value;
+                          lastid="";
+                          getProductList();
 
-                    });
+                        });
 
-                  },
-                ),
+                      },
+                    ),
+
+                  )
+
+
+
+
               ),
             ),
               Expanded(
