@@ -3,6 +3,7 @@ import 'package:beir_flutter/pages/VpnPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:flutter/services.dart';
+import 'package:permission_handler/permission_handler.dart';
 class SettingsPage extends StatelessWidget {
   void startFloatingTimeService() {
     const platform = MethodChannel('floating_time_service');
@@ -32,6 +33,20 @@ class SettingsPage extends StatelessWidget {
           ListTile(
             title: Text('悬浮时间'),
             onTap: () async {
+              // 检查是否拥有悬浮窗口权限
+              PermissionStatus status = await Permission.systemAlertWindow.status ;
+
+              if (status != PermissionStatus.granted) {
+                // 申请悬浮窗口权限
+                PermissionStatus permissionStatus = await Permission.systemAlertWindow.request();
+
+                if (permissionStatus != PermissionStatus.granted) {
+                  // 权限未被授予，做相应的处理
+                  print("用户未授权");
+                  return;
+                }
+              }
+
               // 处理隐私设置的点击事件
               await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
               startFloatingTimeService();

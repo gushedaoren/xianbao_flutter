@@ -57,6 +57,7 @@ dependencies:
   image_gallery_saver: ^1.6.7
   http: ^0.13.3
   flutter_windowmanager: ^0.2.0
+  permission_handler: ^10.4.1
 
 
 
