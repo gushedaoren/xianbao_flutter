@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 
 class BLConfig {
 
-  static String Channel = "安卓";
+  static String Channel = "线报好羊毛-安卓";
 
   static String PackageName = "com.shumei.xianbao";
   static String AppName = "线报好羊毛";

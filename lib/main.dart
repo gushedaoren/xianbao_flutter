@@ -4,6 +4,7 @@ import 'package:beir_flutter/homepage/MyTabBarPage.dart';
 import 'package:beir_flutter/pages/SplashPage.dart';
 import 'package:beir_flutter/tool/CommonTool.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'package:one_context/one_context.dart';
 
@@ -20,10 +21,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return MaterialApp(
-      builder: OneContext().builder,
+      builder: (BuildContext context, Widget? child) {
+        // 在这里同时使用 OneContext().builder 和 EasyLoading.init()
+        return EasyLoading.init(builder: OneContext().builder)(context, child);
+      },
       navigatorKey: OneContext().key,
-      // title: BLConfig.AppName,
+
       debugShowCheckedModeBanner: false,
+
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:beir_flutter/base/BLConfig.dart';
+import 'package:beir_flutter/base/BLConstant.dart';
 import 'package:beir_flutter/pages/SettingsPage.dart';
 import 'package:beir_flutter/pages/VpnPage.dart';
 import 'package:beir_flutter/tool/CommonTool.dart';
@@ -50,7 +51,7 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
       _scrollController.addListener(_onScroll);
       _tabController = TabController(length: 5, vsync: this);
       _pageController = PageController(initialPage: 0); // Initialize the PageController
-      checkUpdate();
+      CommonTool().checkUpdate(context,true);
       getProductList();
     });
   }
@@ -70,73 +71,6 @@ class _MyTabBarState extends State<MyTabBarPage> with SingleTickerProviderStateM
         isLoading = true;
       });
       getProductList();
-    }
-  }
-  Future<void> checkUpdate() async{
-    //Android , 需要下载apk包
-    if(Platform.isAndroid){
-      print('is android');
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      String appVersion = packageInfo.version;
-      var versioncode=packageInfo.buildNumber;
-      var url_get = BLConfig.domain + "/CheckAppVersion?versioncode=$versioncode";
-      print(url_get);
-
-      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-      var userid = sharedPreferences.getString("userid");
-
-      var queryParams = {'userid': userid};
-      print("homepageurl:$url_get");
-      var response = await RequestUtil.dio.get(url_get, queryParameters: queryParams);
-      print(response.data);
-      var needUpdate=response.data["needUpdate"];
-      var updateurl=response.data["url"];
-      var serverVersionName=response.data["serverVersionName"];
-      if(needUpdate){
-        print("needUpdate true 开始下载...");
-        showUpdateAlert(updateurl);
-
-      }
-
-
-    }
-
-
-  }
-
-  showUpdateAlert(apkurl){
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('提示'),
-          content: Text('线报好羊毛更新了，赶紧去下载'),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-
-                Navigator.pop(context);
-              },
-              child: Text('取消'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                _downloadApk(apkurl);
-                Navigator.pop(context);
-              },
-              child: Text('确认'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-  void _downloadApk(apkUrl) async {
-    if (await canLaunch(apkUrl)) {
-      await launch(apkUrl);
-    } else {
-      throw 'Could not launch $apkUrl';
     }
   }
 

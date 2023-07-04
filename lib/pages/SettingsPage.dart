@@ -1,10 +1,14 @@
 import 'package:beir_flutter/base/BLConstant.dart';
+import 'package:beir_flutter/pages/FeedbackPage.dart';
 import 'package:beir_flutter/pages/VpnPage.dart';
+import 'package:beir_flutter/tool/CommonTool.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:share/share.dart';
 class SettingsPage extends StatelessWidget {
+
   void startFloatingTimeService() {
     const platform = MethodChannel('floating_time_service');
     try {
@@ -55,19 +59,26 @@ class SettingsPage extends StatelessWidget {
           ListTile(
             title: Text('意见反馈'),
             onTap: () {
-              // 处理显示设置的点击事件
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => FeedbackPage()), // 替换为你的 VPN 地址切换页面的构造函数
+              );
             },
           ),
           ListTile(
             title: Text('分享App'),
             onTap: () {
-              // 处理显示设置的点击事件
+              var title =  BLConstant.shareAppMsg;
+              var url = BLConstant.appHelpUrl;
+
+              var source="来源:线报好羊毛安卓版\n";
+              Share.share('$title\n$url\n$source');
             },
           ),
           ListTile(
             title: Text('版本信息: v'+BLConstant.version),
             onTap: () {
-              // 处理显示设置的点击事件
+              CommonTool().checkUpdate(context,false);
             },
           ),
           // 添加更多的设置选项

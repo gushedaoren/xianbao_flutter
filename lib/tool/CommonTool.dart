@@ -15,6 +15,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 
 import 'package:launch_review/launch_review.dart';
@@ -552,6 +553,90 @@ class CommonTool {
   openReview() async {
     LaunchReview.launch(
         androidAppId: BLConfig.PackageName, iOSAppId: "6443974938");
+  }
+
+  Future<void> checkUpdate(context,islaunch) async{
+    //Android , 需要下载apk包
+    if(Platform.isAndroid){
+      print('is android');
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      String appVersion = packageInfo.version;
+      var versioncode=packageInfo.buildNumber;
+      var url_get = BLConfig.domain + "/CheckAppVersion?versioncode=$versioncode";
+      print(url_get);
+
+      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      var userid = sharedPreferences.getString("userid");
+
+      var queryParams = {'userid': userid};
+      print("homepageurl:$url_get");
+      var response = await RequestUtil.dio.get(url_get, queryParameters: queryParams);
+      print(response.data);
+      var needUpdate=response.data["needUpdate"];
+      var updateurl=response.data["apkUrl"];
+      BLConstant.apkUrl=updateurl;
+      BLConstant.shareAppMsg=response.data["shareAppMsg"];
+      BLConstant.updateMsg=response.data["updateMsg"];
+      BLConstant.appHelpUrl=response.data["appHelpUrl"];
+      var serverVersionName=response.data["serverVersionName"];
+      if(needUpdate){
+        print("needUpdate true 开始下载...");
+        showUpdateAlert(updateurl,BLConstant.updateMsg,context);
+
+      }else{
+        if(islaunch==false){
+          Fluttertoast.showToast(
+            msg: '已经是最新版本了，无需更新',
+            toastLength: Toast.LENGTH_SHORT, // Toast持续时间，可以是Toast.LENGTH_SHORT或Toast.LENGTH_LONG
+            gravity: ToastGravity.BOTTOM, // Toast显示的位置
+            backgroundColor: Colors.black54, // Toast背景颜色
+            textColor: Colors.white, // Toast文字颜色
+            fontSize: 16.0, // Toast文字大小
+          );
+        }
+      }
+
+
+
+    }
+
+
+  }
+
+  showUpdateAlert(apkurl,updateMsg,context){
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('提示'),
+          content: Text(updateMsg),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+
+                Navigator.pop(context);
+              },
+              child: Text('取消'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _downloadApk(apkurl);
+                Navigator.pop(context);
+              },
+              child: Text('确认'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+  void _downloadApk(apkUrl) async {
+    if (await canLaunch(apkUrl)) {
+      await launch(apkUrl);
+    } else {
+      throw 'Could not launch $apkUrl';
+    }
   }
 
 

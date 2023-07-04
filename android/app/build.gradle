@@ -63,8 +63,8 @@ android {
         minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
 
-        versionCode 800
-        versionName "8.0"
+        versionCode 200
+        versionName "2.0"
 
         multiDexEnabled true
         dexOptions {

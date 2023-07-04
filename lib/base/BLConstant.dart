@@ -22,6 +22,12 @@ class BLConstant {
   static Color shujuTootipBgColor = Color(0xffFFD559);
   static Color shujuChartAreaBgColor = Color(0x19FFF3D1);
 
+  static var UpdateApkUrl="";
+  static var shareAppMsg="";
+  static var appHelpUrl="";
+  static var apkUrl="";
+  static var updateMsg="";
+
   static LinearGradient chartLinearGradient = new LinearGradient(
       colors: [
         Color(0xfffce29c),
