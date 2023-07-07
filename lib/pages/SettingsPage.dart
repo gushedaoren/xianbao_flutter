@@ -51,8 +51,8 @@ class SettingsPage extends StatelessWidget {
                 }
               }
 
-              // 处理隐私设置的点击事件
-              await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
+              // // 处理隐私设置的点击事件
+              // await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
               startFloatingTimeService();
             },
           ),
