@@ -7,6 +7,7 @@ import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:share/share.dart';
+import 'package:url_launcher/url_launcher.dart';
 class SettingsPage extends StatelessWidget {
 
   void startFloatingTimeService() {
@@ -63,6 +64,14 @@ class SettingsPage extends StatelessWidget {
                 context,
                 MaterialPageRoute(builder: (context) => FeedbackPage()), // 替换为你的 VPN 地址切换页面的构造函数
               );
+            },
+          ),
+          ListTile(
+            title: Text('使用帮助'),
+            onTap: () {
+              print("appHelpUrl:");
+              print(BLConstant.appHelpUrl);
+              launchUrl(Uri.parse(BLConstant.appHelpUrl));
             },
           ),
           ListTile(
