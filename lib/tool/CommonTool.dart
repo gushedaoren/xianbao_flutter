@@ -576,12 +576,15 @@ class CommonTool {
       var updateurl=response.data["apkUrl"];
       BLConstant.apkUrl=updateurl;
       BLConstant.shareAppMsg=response.data["shareAppMsg"];
-      BLConstant.updateMsg=response.data["updateMsg"];
+      var updateMsg=response.data["updateMsg"];
+      BLConstant.updateMsg=updateMsg;
+      print("updateMsg:");
+      print(BLConstant.updateMsg);
       BLConstant.appHelpUrl=response.data["appHelpUrl"];
       var serverVersionName=response.data["serverVersionName"];
       if(needUpdate){
         print("needUpdate true 开始下载...");
-        showUpdateAlert(updateurl,BLConstant.updateMsg,context);
+        showUpdateAlert(updateurl,updateMsg,context);
 
       }else{
         if(islaunch==false){

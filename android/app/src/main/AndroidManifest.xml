@@ -12,7 +12,7 @@
 
     <application
        android:usesCleartextTraffic="true"
-        android:label="线报好羊毛"
+        android:label="多米线报"
         android:icon="@mipmap/ic_launcher"
        tools:ignore="MissingClass">
         <provider
